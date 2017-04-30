@@ -3,7 +3,7 @@
  * 4/24/17.
  */
 public enum Level {
-    DIFFICULT(Integer.MAX_VALUE), INTERMEDIATE(2), EASY(1);
+    DIFFICULT(5), INTERMEDIATE(1), EASY(1);
 
     private final int depth;
 

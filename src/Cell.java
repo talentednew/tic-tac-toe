@@ -5,12 +5,9 @@
 public class Cell {
 
     private Seed content;
-    private final int row;
-    private final int col;
 
-    public Cell(int row, int col) {
-        this.row = row;
-        this.col = col;
+
+    public Cell( ) {
         this.content = Seed.EMPTY;
     }
 

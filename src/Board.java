@@ -15,7 +15,7 @@ public class Board {
         cells = new Cell[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                cells[i][j] = new Cell(i, j);
+                cells[i][j] = new Cell();
             }
         }
     }
@@ -98,10 +98,27 @@ public class Board {
         return this.SIZE;
     }
 
-    public Cell getCell(int row, int col) {
+    public Seed getCell(int row, int col) {
         if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
             throw new IllegalArgumentException("Error in row and col");
         }
-        return cells[row][col];
+        return cells[row][col].getContent();
+    }
+
+    public void setCell(int row, int col, Seed seed) {
+        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
+            throw new IllegalArgumentException("Error in row and col");
+        }
+        setCurrentRow(row);
+        setCurrentCol(col);
+        cells[currentRow][currentCol].setContent(seed);
+    }
+
+    public void clear() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                cells[i][j].setContent(Seed.EMPTY);
+            }
+        }
     }
 }

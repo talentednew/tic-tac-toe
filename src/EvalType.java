@@ -19,4 +19,13 @@ public class EvalType {
         this.o1 = 0;
     }
 
+    public void printEvalType() {
+        System.out.println("x3 = " + x3);
+        System.out.println("x2 = " + x2);
+        System.out.println("x1 = " + x1);
+        System.out.println("o3 = " + o3);
+        System.out.println("o2 = " + o2);
+        System.out.println("o1 = " + o1);
+    }
+
 }
