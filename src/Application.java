@@ -7,9 +7,9 @@ public class Application {
     public static void main(String[] args) {
         TicTacToe ttt = new TicTacToe();
 
-        robotCompetition(ttt, 2, 3);
+//        robotCompetition(ttt, 1, 3);
 
-//        ttt.play();
+        ttt.play();
 
     }
 
@@ -18,7 +18,7 @@ public class Application {
         int oWin = 0;
         int tie = 0;
         int OGoFirst = 0;
-        for (int i = 0; i < 100; i++){
+        for (int i = 0; i < 5; i++){
             String rst = ttt.playRobotCompetition(xLevel, oLevel, OGoFirst);
             if (rst.equals("X")) {
                 xWin++;

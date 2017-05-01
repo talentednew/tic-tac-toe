@@ -71,6 +71,7 @@ public class TicTacToe {
                 }
             }
             borad.paint();
+            System.out.println("******************************************");
             checkBorad();
             player = player == Seed.CROSS ? Seed.NOUGHT : Seed.CROSS;
         }
@@ -91,7 +92,7 @@ public class TicTacToe {
 
     public String playRobotCompetition (int xLevel, int oLevel, int OGoFirst) {
 
-        System.out.println("Game start");
+//        System.out.println("Game start");
 
         ai.setLevel(xLevel);
         ai2.setLevel(oLevel);
@@ -104,8 +105,8 @@ public class TicTacToe {
             } else {
                 ai.robotMove();
             }
-            borad.paint();
-            System.out.println("******************************************");
+//            borad.paint();
+//            System.out.println("******************************************");
             checkBorad();
             player = player == Seed.CROSS ? Seed.NOUGHT : Seed.CROSS;
         }
