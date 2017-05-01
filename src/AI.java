@@ -9,6 +9,8 @@ public class AI {
 
     private static final int MIN_UTINITY = -1000;
     private static final int MAX_UTILITY = 1000;
+    private static final int CUT_OFF_LEVEL = 8;
+    private static final int CUT_OFF_START_TIME = 2;
 
     private final Seed aiSeed;
     private final Board board;
@@ -42,15 +44,15 @@ public class AI {
 
         int row = moves[0];
         int col = moves[1];
-//        System.out.println("******************************************");
+        System.out.println("******************************************");
 
-//        System.out.println("Depth is " + statType.getMaxDepth());
-//        System.out.println("Total num of node generated is :"  + (statType.getTotalNodeNum() + 1));
-//        System.out.println("Max pruning occurs: " + statType.getMaxPruning() + " Times");
-//        System.out.println("Min pruning occurs: " + statType.getMinPruning() + " Times");
-//        System.out.println("Total time cost : " + (LocalDateTime.now().getSecond() - startSecond) + "s");
+        System.out.println("Depth is " + statType.getMaxDepth());
+        System.out.println("Total num of node generated is :"  + (statType.getTotalNodeNum() + 1));
+        System.out.println("Max pruning occurs: " + statType.getMaxPruning() + " Times");
+        System.out.println("Min pruning occurs: " + statType.getMinPruning() + " Times");
+        System.out.println("Total time cost : " + checkTimeOut(LocalDateTime.now().getSecond()) + "s");
         if (statType.getCutOff()) {
-//            System.out.println("cutoff occurs!!");
+            System.out.println("cutoff occurs!!");
         }
 
 //        System.out.println(aiSeed + " final decision is :");
@@ -72,8 +74,9 @@ public class AI {
     private int[] getMaxValue(int level, Seed seed, int alpha, int beta, List<int[]> nextMoves, Set<int[]> set, int currentDepth) {
 
         statType.setMaxDepth(Math.max(statType.getMaxDepth(), currentDepth));
+        int curentLevel = level;
 
-        int score = checkBoard(level, nextMoves.size() == set.size(), true);
+        int score = checkBoard(curentLevel, nextMoves.size() == set.size(), true);
         int bestRow = -1, bestCol = -1;
         int currentAlpha = alpha, currentBeta = beta;
 
@@ -90,8 +93,11 @@ public class AI {
 
                 set.add(moves);
 
-                int[] rst = getMinValue(level - 1, getOpponent(seed), currentAlpha, currentBeta, nextMoves, set, currentDepth + 1);
+                int[] rst = getMinValue(curentLevel - 1, getOpponent(seed), currentAlpha, currentBeta, nextMoves, set, currentDepth + 1);
                 statType.setTotalNodeNum(statType.getTotalNodeNum() + 1);
+                if (statType.getCutOff() && curentLevel > CUT_OFF_LEVEL) {
+                    curentLevel = CUT_OFF_LEVEL;
+                }
                 set.remove(moves);
                 board.setCell(row, col, Seed.EMPTY);
 //                board.paint();
@@ -131,8 +137,9 @@ public class AI {
     private int[] getMinValue(int level, Seed seed, int alpha, int beta, List<int[]> nextMoves, Set<int[]> set, int currentDepth) {
 
         statType.setMaxDepth(Math.max(statType.getMaxDepth(), currentDepth));
+        int curentLevel = level;
 
-        int score = checkBoard(level, nextMoves.size() == set.size(), false);
+        int score = checkBoard(curentLevel, nextMoves.size() == set.size(), false);
         int bestRow = -1, bestCol = -1;
         int currentAlpha = alpha, currentBeta = beta;
 
@@ -149,8 +156,11 @@ public class AI {
 
                 set.add(moves);
 
-                int[] rst = getMaxValue(level - 1, getOpponent(seed), currentAlpha, currentBeta, nextMoves, set, currentDepth + 1);
+                int[] rst = getMaxValue(curentLevel - 1, getOpponent(seed), currentAlpha, currentBeta, nextMoves, set, currentDepth + 1);
                 statType.setTotalNodeNum(statType.getTotalNodeNum() + 1);
+                if (statType.getCutOff() && curentLevel > CUT_OFF_LEVEL) {
+                    curentLevel = CUT_OFF_LEVEL;
+                }
                 set.remove(moves);
                 board.setCell(row, col, Seed.EMPTY);
 //                board.paint();
@@ -187,18 +197,24 @@ public class AI {
         if (isTie) {
             return 0;
         }
-        if (level == 0 || checkTimeOut()) {
+        if (level == 0 ) {
             return evaluateValue(board);
         }
+        checkTimeOut(LocalDateTime.now().getSecond());
         return isMaxFunction ? Integer.MIN_VALUE : Integer.MAX_VALUE;
     }
 
-    private boolean checkTimeOut() {
-        if (LocalDateTime.now().getSecond() - startSecond > 1) {
-            statType.setCutOff(true);
-            return true;
+    private int checkTimeOut(int currentSecond) {
+        int diff = 0;
+        if (currentSecond < startSecond) {
+            diff = currentSecond + 60 - startSecond;
+        } else {
+            diff = currentSecond - startSecond;
         }
-        return false;
+        if (diff > CUT_OFF_START_TIME) {
+            statType.setCutOff(true);
+        }
+        return diff;
     }
 
     private int evaluateValue(Board board) {

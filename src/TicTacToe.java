@@ -105,8 +105,8 @@ public class TicTacToe {
             } else {
                 ai.robotMove();
             }
-//            borad.paint();
-//            System.out.println("******************************************");
+            borad.paint();
+            System.out.println("******************************************");
             checkBorad();
             player = player == Seed.CROSS ? Seed.NOUGHT : Seed.CROSS;
         }

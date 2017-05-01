@@ -2,7 +2,7 @@
  * Created by BoogieJay
  * 4/25/17.
  */
-public class Application {
+public class App {
 
     public static void main(String[] args) {
         TicTacToe ttt = new TicTacToe();
