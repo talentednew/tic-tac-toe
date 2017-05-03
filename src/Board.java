@@ -11,6 +11,27 @@ public class Board {
     private int currentRow;
     private int currentCol;
 
+    private class Cell {
+
+        private Seed content;
+
+        private Cell( ) {
+            this.content = Seed.EMPTY;
+        }
+
+        private Seed getContent() {
+            return this.content;
+        }
+
+        private void setContent(Seed seed) {
+            this.content = seed;
+        }
+
+        private void paint() {
+            System.out.print(content);
+        }
+    }
+
     public Board () {
         cells = new Cell[SIZE][SIZE];
         for (int i = 0; i < SIZE; i++) {
@@ -107,6 +128,7 @@ public class Board {
 
     public void setCell(int row, int col, Seed seed) {
         if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
+            System.out.println("!!!!What!!!! you choose row = "  + row + ", col = " + col);
             throw new IllegalArgumentException("Error in row and col");
         }
         setCurrentRow(row);

@@ -1,3 +1,5 @@
+import javafx.stage.Stage;
+
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -9,8 +11,8 @@ public class AI {
 
     private static final int MIN_UTINITY = -1000;
     private static final int MAX_UTILITY = 1000;
-    private static final int CUT_OFF_LEVEL = 8;
-    private static final int CUT_OFF_START_TIME = 2;
+    private static final int CUT_OFF_LEVEL = 7;
+    private static final int CUT_OFF_START_TIME = 1;
 
     private final Seed aiSeed;
     private final Board board;
@@ -36,7 +38,7 @@ public class AI {
         }
     }
 
-    public void robotMove() {
+    public int[] robotMove() {
         startSecond = LocalDateTime.now().getSecond();
         statType = new StatType();
 
@@ -60,6 +62,8 @@ public class AI {
 //        board.paint();
 //        evaluateValue(board);
 //        System.out.println("******************************************");
+
+        return new int[]{row, col};
     }
 
     private int[] minimax(int level, Seed seed, int alpha, int beta) {
@@ -211,6 +215,7 @@ public class AI {
         } else {
             diff = currentSecond - startSecond;
         }
+
         if (diff > CUT_OFF_START_TIME) {
             statType.setCutOff(true);
         }
