@@ -11,9 +11,7 @@ import javafx.geometry.*;
 
 public class AlertBox {
 
-    private  static boolean playAgain = false;
-
-    public static boolean display(String title, String message) {
+    public static void display(String title, String message) {
         Stage window = new Stage();
 
         //Block events to other windows
@@ -24,9 +22,7 @@ public class AlertBox {
         Label label = new Label();
         label.setText(message);
         Button closeButton = new Button("End the Game");
-        Button playButton = new Button("Play again");
         closeButton.setOnAction(e -> window.close());
-        playButton.setOnAction(event -> playAgain = true);
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label, closeButton);
@@ -37,7 +33,6 @@ public class AlertBox {
         window.setScene(scene);
         window.showAndWait();
 
-        return playAgain;
     }
 
 }

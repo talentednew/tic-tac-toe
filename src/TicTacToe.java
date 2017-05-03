@@ -1,10 +1,7 @@
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -12,8 +9,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import javax.swing.plaf.nimbus.State;
 import java.util.Scanner;
 
 /**
@@ -24,15 +19,23 @@ public class TicTacToe extends Application{
 
     private final Board board;
     private final Tile[][] uiBoard;
-    private GameState gameState;
-    private Seed player;
     private final Scanner in;
     private final AI ai;
     private final AI ai2;
     private int[] moves;
-    private boolean playAgain;
-
+    private GameState gameState;
+    private Seed player;
     private Stage window;
+
+    public TicTacToe() {
+        this.board = new Board();
+        this.uiBoard = new Tile[board.getSIZE()][board.getSIZE()];
+        this.gameState = GameState.PLAY;
+        this.in = new Scanner(System.in);
+        this.player = Seed.NOUGHT;
+        ai = new AI(this.board, Seed.CROSS);
+        ai2 = new AI(this.board, Seed.NOUGHT);
+    }
 
     private class Tile extends StackPane {
         private Text text;
@@ -56,7 +59,7 @@ public class TicTacToe extends Application{
             getChildren().addAll(border, text);
 
             setOnMouseClicked(event -> {
-                if (text.getText() == "") {
+                if (getValue() == "") {
                     drawO();
                     moves = new int[]{this.row, this.col};
                     board.setCell(moves[0], moves[1], Seed.NOUGHT);
@@ -68,14 +71,6 @@ public class TicTacToe extends Application{
                     player = player == Seed.CROSS ? Seed.NOUGHT : Seed.CROSS;
                 }
             });
-        }
-
-        public double getCenterX() {
-            return getTranslateX() + 100;
-        }
-
-        public double getCenterY() {
-            return getTranslateY() + 100;
         }
 
         public String getValue() {
@@ -103,7 +98,7 @@ public class TicTacToe extends Application{
             } else {
                 message = "Tie!";
             }
-            playAgain = AlertBox.display(gameName, message);
+            AlertBox.display(gameName, message);
             window.close();
             System.exit(0);
         }
@@ -116,18 +111,6 @@ public class TicTacToe extends Application{
 
     private void drawUI(int row, int col, Seed seed) {
         uiBoard[row][col].drawX();
-    }
-
-
-    public TicTacToe() {
-        this.board = new Board();
-        this.uiBoard = new Tile[board.getSIZE()][board.getSIZE()];
-        this.gameState = GameState.PLAY;
-        this.in = new Scanner(System.in);
-        this.player = Seed.NOUGHT;
-        ai = new AI(this.board, Seed.CROSS);
-        ai2 = new AI(this.board, Seed.NOUGHT);
-        this.playAgain = true;
     }
 
     @Override
@@ -148,24 +131,6 @@ public class TicTacToe extends Application{
         }
 
         window.show();
-
-
-//        System.out.println("ai level is: "  + rst[0]);
-//        System.out.println("Starting player is: " + rst[1]);
-
-//        int[] moves = new int[2];
-//
-//        while (gameState == GameState.PLAY) {
-//            if (player == Seed.NOUGHT) {
-//                moves = BoardUI.getPlayerMove();
-//            } else {
-//                ai.robotMove();
-//            }
-////            borad.paint();
-////            System.out.println("******************************************");
-//            checkBorad();
-//            player = player == Seed.CROSS ? Seed.NOUGHT : Seed.CROSS;
-//        }
 
     }
 
@@ -193,73 +158,10 @@ public class TicTacToe extends Application{
 
         launch();
 
-//        System.out.println("Welcome to TicTacToe");
-
-//        System.out.println("Please choose model: 1 - Human vs Human, 2 - Human vs Robot, 3 - Robot vs Robot");
-
-//        int model = in.nextInt();
-
-//        if (model == 1) {
-//            System.out.println("You choose Human VS Human");
-//        } else {
-//
-//            System.out.println("Please select 'X' AI level: 1 - easy, 2 - intermediate, 3 - difficult.");
-//            ai.setLevel(in.nextInt());
-//
-//            if (model == 2) {
-//                System.out.println("If you want to go first, enter 1, else enter 0");
-//                setPlayer(in.nextInt());
-//            }
-//
-//            if (model == 3) {
-//                System.out.println("Please select 'O' AI level: 1 - easy, 2 - intermediate, 3 - difficult.");
-//                ai2.setLevel(in.nextInt());
-//            }
-//
-//
-//        }
-//
-//
-//        System.out.println("Game start");
-//        borad.paint();
-//
-//        while (gameState == GameState.PLAY) {
-//            if (player == Seed.NOUGHT) {
-//                if (model == 1 || model == 2) {
-//                    playerMove();
-//                } else {
-//                    ai2.robotMove();
-//                }
-//            } else {
-//                if (model == 1) {
-//                    playerMove();
-//                } else {
-//                    ai.robotMove();
-//                }
-//            }
-//            borad.paint();
-//            System.out.println("******************************************");
-//            checkBorad();
-//            player = player == Seed.CROSS ? Seed.NOUGHT : Seed.CROSS;
-//        }
-
-//        board.clear();
-//        GameState rstState = gameState;
-//        gameState = GameState.PLAY;
-
-//        if (rstState == GameState.CROSS_WIN) {
-//            System.out.println(" X wins the game!");
-//        } else if (rstState == GameState.NOUGHT_WIN) {
-//            System.out.println(" O wins the game!");
-//        } else {
-//            System.out.println(" It's a tie!");
-//        }
-
     }
 
-    public String playRobotCompetition (int xLevel, int oLevel, int OGoFirst) {
 
-//        System.out.println("Game start");
+    public String playRobotCompetition (int xLevel, int oLevel, int OGoFirst) {
 
         ai.setLevel(xLevel);
         ai2.setLevel(oLevel);

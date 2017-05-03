@@ -103,16 +103,8 @@ public class Board {
         this.currentRow = row;
     }
 
-    public int getCurrentRow() {
-        return this.currentRow;
-    }
-
     public void setCurrentCol(int col) {
         this.currentCol = col;
-    }
-
-    public int getCurrentCol() {
-        return this.currentCol;
     }
 
     public int getSIZE() {
@@ -128,7 +120,6 @@ public class Board {
 
     public void setCell(int row, int col, Seed seed) {
         if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) {
-            System.out.println("!!!!What!!!! you choose row = "  + row + ", col = " + col);
             throw new IllegalArgumentException("Error in row and col");
         }
         setCurrentRow(row);

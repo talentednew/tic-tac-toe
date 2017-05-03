@@ -7,7 +7,7 @@ public enum Seed {
 
     private final String seed;
 
-    private Seed(String seed) {
+    Seed(String seed) {
         this.seed = seed;
     }
 

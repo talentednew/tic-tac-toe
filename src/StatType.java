@@ -4,14 +4,14 @@
  */
 public class StatType {
 
-    private boolean cutOff;
+    private boolean needCutOff;
     private int maxDepth;
     private long totalNodeNum;
     private long maxPruning;
     private long minPruning;
 
     public StatType() {
-        this.cutOff = false;
+        this.needCutOff = false;
         this.maxDepth = 0;
         this.totalNodeNum = 0;
         this.maxPruning = 0;
@@ -19,7 +19,7 @@ public class StatType {
     }
 
     public void setCutOff(boolean cutOff) {
-        this.cutOff = cutOff;
+        this.needCutOff = cutOff;
     }
 
     public void setMaxDepth(int maxDepth) {
@@ -38,11 +38,6 @@ public class StatType {
         this.minPruning = minPruning;
     }
 
-    public boolean isCutOff() {
-
-        return cutOff;
-    }
-
     public int getMaxDepth() {
         return maxDepth;
     }
@@ -59,7 +54,7 @@ public class StatType {
         return minPruning;
     }
 
-    public boolean getCutOff() {
-        return cutOff;
+    public boolean getNeedCutOff() {
+        return needCutOff;
     }
 }

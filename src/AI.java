@@ -1,4 +1,3 @@
-import javafx.stage.Stage;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -17,8 +16,8 @@ public class AI {
     private final Seed aiSeed;
     private final Board board;
     private final Random random;
-    private Level level;
     private int startSecond;
+    private Level level;
     private StatType statType;
 
     public AI (Board board, Seed seed) {
@@ -46,22 +45,21 @@ public class AI {
 
         int row = moves[0];
         int col = moves[1];
-        System.out.println("******************************************");
 
-        System.out.println("Depth is " + statType.getMaxDepth());
-        System.out.println("Total num of node generated is :"  + (statType.getTotalNodeNum() + 1));
+        System.out.println("******************************************");
+        System.out.println("MaxDepth reached: " + statType.getMaxDepth());
+        System.out.println("Total num of node generated: "  + (statType.getTotalNodeNum() + 1));
         System.out.println("Max pruning occurs: " + statType.getMaxPruning() + " Times");
         System.out.println("Min pruning occurs: " + statType.getMinPruning() + " Times");
-        System.out.println("Total time cost : " + checkTimeOut(LocalDateTime.now().getSecond()) + "s");
-        if (statType.getCutOff()) {
-            System.out.println("cutoff occurs!!");
+        System.out.println("Total time cost: " + checkTimeOut(LocalDateTime.now().getSecond()) + "s");
+        if (statType.getNeedCutOff()) {
+            System.out.println("!! cutoff occurs !!");
         }
 
-//        System.out.println(aiSeed + " final decision is :");
         board.setCell(row, col, aiSeed);
+
 //        board.paint();
 //        evaluateValue(board);
-//        System.out.println("******************************************");
 
         return new int[]{row, col};
     }
@@ -92,16 +90,16 @@ public class AI {
                 int row = moves[0];
                 int col = moves[1];
                 board.setCell(row, col, seed);
-
 //                board.paint();
-
                 set.add(moves);
 
                 int[] rst = getMinValue(curentLevel - 1, getOpponent(seed), currentAlpha, currentBeta, nextMoves, set, currentDepth + 1);
+
                 statType.setTotalNodeNum(statType.getTotalNodeNum() + 1);
-                if (statType.getCutOff() && curentLevel > CUT_OFF_LEVEL) {
+                if (statType.getNeedCutOff() && curentLevel > CUT_OFF_LEVEL) {
                     curentLevel = CUT_OFF_LEVEL;
                 }
+
                 set.remove(moves);
                 board.setCell(row, col, Seed.EMPTY);
 //                board.paint();
@@ -129,14 +127,6 @@ public class AI {
     }
 
 
-    private Seed getOpponent(Seed seed) {
-        if (seed == Seed.NOUGHT) {
-            return Seed.CROSS;
-        } else {
-            return Seed.NOUGHT;
-        }
-    }
-
 
     private int[] getMinValue(int level, Seed seed, int alpha, int beta, List<int[]> nextMoves, Set<int[]> set, int currentDepth) {
 
@@ -155,16 +145,16 @@ public class AI {
                 int row = moves[0];
                 int col = moves[1];
                 board.setCell(row, col, seed);
-
 //                board.paint();
-
                 set.add(moves);
 
                 int[] rst = getMaxValue(curentLevel - 1, getOpponent(seed), currentAlpha, currentBeta, nextMoves, set, currentDepth + 1);
+
                 statType.setTotalNodeNum(statType.getTotalNodeNum() + 1);
-                if (statType.getCutOff() && curentLevel > CUT_OFF_LEVEL) {
+                if (statType.getNeedCutOff() && curentLevel > CUT_OFF_LEVEL) {
                     curentLevel = CUT_OFF_LEVEL;
                 }
+
                 set.remove(moves);
                 board.setCell(row, col, Seed.EMPTY);
 //                board.paint();
@@ -175,6 +165,7 @@ public class AI {
                     bestRow = row;
                     bestCol = col;
                 }
+
                 if (score <= currentAlpha) {
 //                    System.out.println("In level " + level + ", MIN pruning occurs" + " Return score " + score);
                     statType.setMinPruning(statType.getMinPruning() + 1);
@@ -189,6 +180,14 @@ public class AI {
 
 //        System.out.println("In level " + level + ", return row[" + bestRow + "] col[" + bestCol + "] and score[" + score + "]");
         return new int[]{bestRow, bestCol, score};
+    }
+
+    private Seed getOpponent(Seed seed) {
+        if (seed == Seed.NOUGHT) {
+            return Seed.CROSS;
+        } else {
+            return Seed.NOUGHT;
+        }
     }
 
     private int checkBoard(int level, boolean isTie, boolean isMaxFunction) {
@@ -210,10 +209,9 @@ public class AI {
 
     private int checkTimeOut(int currentSecond) {
         int diff = 0;
+        diff = currentSecond - startSecond;
         if (currentSecond < startSecond) {
-            diff = currentSecond + 60 - startSecond;
-        } else {
-            diff = currentSecond - startSecond;
+            diff += 60;
         }
 
         if (diff > CUT_OFF_START_TIME) {
@@ -224,45 +222,44 @@ public class AI {
 
     private int evaluateValue(Board board) {
         EvalType evalType = new EvalType();
+        int boardSize = board.getSIZE();
 
-        List<Seed> seedList = new ArrayList<>(4);
+        List<Seed> seedList = new ArrayList<>(boardSize);
 
-        for (int i = 0; i < board.getSIZE(); i++) {
-            for (int j = 0; j < board.getSIZE(); j++) {
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
                 seedList.add(j, board.getCell(i, j));
             }
             calculateEvalScore(seedList, evalType);
         }
 
-        for (int i = 0; i < board.getSIZE(); i++) {
-            for (int j = 0; j < board.getSIZE(); j++) {
+        for (int i = 0; i <boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
                 seedList.add(j, board.getCell(j, i));
             }
             calculateEvalScore(seedList, evalType);
         }
 
-        for (int i = 0; i < board.getSIZE(); i++) {
+        for (int i = 0; i < boardSize; i++) {
             seedList.add(i, board.getCell(i, i));
         }
         calculateEvalScore(seedList, evalType);
 
-        for (int i = 0; i < board.getSIZE(); i++) {
+        for (int i = 0; i < boardSize; i++) {
             seedList.add(i, board.getCell(i, board.getSIZE() - i - 1));
         }
         calculateEvalScore(seedList, evalType);
-
-//        evalType.printEvalType();
-//        System.out.println(aiSeed + " calculated score is: " + calculateFromFunction(evalType));
 
         return calculateFromFunction(evalType);
     }
 
     private int calculateFromFunction(EvalType evalType) {
+        int score = calculateCrossScore(level, evalType) - calculateNoughtScore(level, evalType);
 
         if (aiSeed == Seed.CROSS) {
-            return calculateCrossScore(level, evalType) - calculateNoughtScore(level, evalType);
+            return score;
         } else {
-            return calculateNoughtScore(level, evalType) - calculateCrossScore(level, evalType);
+            return -score;
         }
     }
 
@@ -321,7 +318,6 @@ public class AI {
             }
         }
     }
-
 
 
     private List<int[]> getNextMoves(Board board) {

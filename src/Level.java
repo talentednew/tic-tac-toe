@@ -7,7 +7,7 @@ public enum Level {
 
     private final int depth;
 
-    private Level(int depth) {
+    Level(int depth) {
         this.depth = depth;
     }
 
