@@ -7,6 +7,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
+ * WelcomePage class stands for the welcome window for user to choose the AI level and starting person
+ *
  * Created by BoogieJay
  * 5/1/17.
  */
@@ -14,6 +16,11 @@ public class WelcomePage {
     private static final String GAME_NAME = "Tic Tac Toe";
     private static int[] answer = new int[2];
 
+    /**
+     * display the window and return the user choices
+     *
+     * @return
+     */
     public static int[] display() {
         Stage window = new Stage();
         window.setTitle(GAME_NAME);
@@ -26,19 +33,20 @@ public class WelcomePage {
         Label levelLable = new Label("AI level:");
         Label playerLabel = new Label("Starting Player:");
 
-        //getItems returns the ObservableList object which you can add items to
         AIBox.getItems().addAll("EASY", "INTERMEDIATE", "DIFFICULT");
         playerBox.getItems().addAll("YOU", "AI");
 
-        //Set a default value
+        // set default value
         AIBox.setValue("EASY");
         playerBox.setValue("YOU");
 
+        // set button action
         button.setOnAction(e -> {
             getChoice(AIBox, playerBox);
             window.close();
         });
 
+        // force user to start
         window.setOnCloseRequest(event -> {
             event.consume();
         });
@@ -56,6 +64,11 @@ public class WelcomePage {
         return answer;
     }
 
+    /**
+     * extract the result selected by user and store in array
+     * @param aiBox
+     * @param playerBox
+     */
     private static void getChoice(ChoiceBox<String> aiBox, ChoiceBox<String> playerBox) {
         String AIResult = aiBox.getValue();
         String playerResult = playerBox.getValue();
