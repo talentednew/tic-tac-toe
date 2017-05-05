@@ -9,7 +9,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import java.util.Scanner;
+
+import java.util.List;
 
 /**
  * Created by BoogieJay
@@ -17,11 +18,14 @@ import java.util.Scanner;
  */
 public class TicTacToe extends Application{
 
+    private static final String GAME_NAME = "Tic Tac Toe";
+    private static final int TILE_SIZE = 150;
+    private static final int UI_BOARD_SIZE = 600;
+
+
     private final Board board;
     private final Tile[][] uiBoard;
-    private final Scanner in;
     private final AI ai;
-    private final AI ai2;
     private int[] moves;
     private GameState gameState;
     private Seed player;
@@ -31,38 +35,33 @@ public class TicTacToe extends Application{
         this.board = new Board();
         this.uiBoard = new Tile[board.getSIZE()][board.getSIZE()];
         this.gameState = GameState.PLAY;
-        this.in = new Scanner(System.in);
         this.player = Seed.NOUGHT;
-        ai = new AI(this.board, Seed.CROSS);
-        ai2 = new AI(this.board, Seed.NOUGHT);
+        ai = new AI(this.board);
     }
 
     private class Tile extends StackPane {
+
+        private final int row;
+        private final int col;
         private Text text;
-        private int row;
-        private int col;
+        private final Rectangle border;
 
         public Tile(int row, int col) {
-
             this.row = row;
             this.col = col;
             this.text = new Text("");
+            this.border = new Rectangle(TILE_SIZE, TILE_SIZE);
 
-            Rectangle border = new Rectangle(150, 150);
             border.setFill(null);
             border.setStroke(Color.BLACK);
-
-
             text.setFont(Font.font(72));
-
             setAlignment(Pos.CENTER);
             getChildren().addAll(border, text);
 
             setOnMouseClicked(event -> {
                 if (getValue() == "") {
-                    drawO();
-                    moves = new int[]{this.row, this.col};
-                    board.setCell(moves[0], moves[1], Seed.NOUGHT);
+
+                    startHumanMoveAndDrawUI(this);
                     checkWin();
 
                     startRobotMoveAndDrawUI();
@@ -84,40 +83,70 @@ public class TicTacToe extends Application{
         private void drawO() {
             text.setText("O");
         }
+
+        private int getRow() {
+            return this.row;
+        }
+
+        private int getCol() {
+            return this.col;
+        }
+
+        private void highLight() {
+            border.setFill(Color.LEMONCHIFFON);
+        }
     }
 
     private void checkWin() {
-        checkBorad();
-        String gameName = "Tic Tac Toe";
+
+        checkBoard();
+        String gameName = GAME_NAME;
         String message;
+
         if (gameState != GameState.PLAY) {
             if (gameState == GameState.NOUGHT_WIN) {
                 message = "O wins!";
+                drawCombo(board.checkConditionAndReturnCombo(Seed.NOUGHT));
             } else if (gameState == GameState.CROSS_WIN) {
                 message = "X wins!";
+                drawCombo(board.checkConditionAndReturnCombo(Seed.CROSS));
             } else {
                 message = "Tie!";
             }
+
             AlertBox.display(gameName, message);
             window.close();
             System.exit(0);
         }
     }
 
-    private void startRobotMoveAndDrawUI() {
-        moves = ai.robotMove();
-        drawUI(moves[0], moves[1], Seed.CROSS);
+    private void drawCombo(List<int[]> combo) {
+        for(int i = 0; i < combo.size(); i++) {
+            int[] position = combo.get(i);
+            int row = position[0];
+            int col = position[1];
+            Tile tile = uiBoard[row][col];
+            tile.highLight();
+        }
     }
 
-    private void drawUI(int row, int col, Seed seed) {
-        uiBoard[row][col].drawX();
+    private void startHumanMoveAndDrawUI(Tile tile) {
+        tile.drawO();
+        moves = new int[]{tile.getRow(), tile.getCol()};
+        board.setCell(moves[0], moves[1], Seed.NOUGHT);
     }
+
+    private void startRobotMoveAndDrawUI() {
+        moves = ai.robotMove();
+        uiBoard[moves[0]][moves[1]].drawX();
+    }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         window = new Stage();
-        window.setTitle("Tic Tac Toe");
+        window.setTitle(GAME_NAME);
         Scene scene = new Scene(createContent());
         window.setScene(scene);
 
@@ -137,16 +166,14 @@ public class TicTacToe extends Application{
 
     private Parent createContent() {
         Pane root = new Pane();
-        root.setPrefSize(600, 600);
+        root.setPrefSize(UI_BOARD_SIZE, UI_BOARD_SIZE);
 
         for (int i = 0; i < board.getSIZE(); i++) {
             for (int j = 0; j < board.getSIZE(); j++) {
                 Tile tile = new Tile(i, j);
-                tile.setTranslateX(j * 150);
-                tile.setTranslateY(i * 150);
-
+                tile.setTranslateX(j * TILE_SIZE);
+                tile.setTranslateY(i * TILE_SIZE);
                 root.getChildren().add(tile);
-
                 uiBoard[i][j] = tile;
             }
         }
@@ -154,51 +181,7 @@ public class TicTacToe extends Application{
         return root;
     }
 
-    public void play () {
-
-        launch();
-
-    }
-
-
-    public String playRobotCompetition (int xLevel, int oLevel, int OGoFirst) {
-
-        ai.setLevel(xLevel);
-        ai2.setLevel(oLevel);
-
-        setPlayer(OGoFirst);
-
-        while (gameState == GameState.PLAY) {
-            if (player == Seed.NOUGHT) {
-                ai2.robotMove();
-            } else {
-                ai.robotMove();
-            }
-            board.paint();
-            System.out.println("******************************************");
-            checkBorad();
-            player = player == Seed.CROSS ? Seed.NOUGHT : Seed.CROSS;
-        }
-
-        GameState rstState = gameState;
-        board.clear();
-        gameState = GameState.PLAY;
-
-        if (rstState == GameState.CROSS_WIN) {
-            System.out.println(" X wins the game!");
-            return "X";
-        } else if (rstState == GameState.NOUGHT_WIN) {
-            System.out.println(" O wins the game!");
-            return "O";
-        } else {
-            System.out.println(" It's a tie!");
-            return "T";
-        }
-
-    }
-
-
-    private void checkBorad() {
+    private void checkBoard() {
         if (board.hasWin(Seed.CROSS)) {
             gameState = GameState.CROSS_WIN;
         } else if (board.hasWin(Seed.NOUGHT)) {
@@ -208,35 +191,13 @@ public class TicTacToe extends Application{
         }
     }
 
-    private void playerMove() {
-
-        boolean validInput = false;
-
-        while (!validInput) {
-
-            System.out.println("Player " + player + " ," + "select row[1 - 4] and column[1 - 4]");
-
-            int row = in.nextInt() - 1;
-            int col = in.nextInt() - 1;
-
-            if (row >= 0 && row < board.getSIZE() && col >= 0 && col < board.getSIZE()) {
-
-                if (board.getCell(row, col) == Seed.EMPTY) {
-                    board.setCell(row, col, player);
-                    validInput = true;
-                } else {
-                    System.out.println("Sorry, you can only choose empty slot");
-                }
-            } else {
-                System.out.println("Sorry, your input is not valid");
-            }
-
-        }
-    }
-
     private void setPlayer(int player) {
         this.player = player == 1 ? Seed.NOUGHT : Seed.CROSS;
     }
 
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
 }

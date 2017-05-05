@@ -11,12 +11,12 @@ import javafx.stage.Stage;
  * 5/1/17.
  */
 public class WelcomePage {
-
+    private static final String GAME_NAME = "Tic Tac Toe";
     private static int[] answer = new int[2];
 
     public static int[] display() {
         Stage window = new Stage();
-        window.setTitle("Tic Tac Toe");
+        window.setTitle(GAME_NAME);
 
         Button button = new Button("Fire The Game!");
 
@@ -28,7 +28,7 @@ public class WelcomePage {
 
         //getItems returns the ObservableList object which you can add items to
         AIBox.getItems().addAll("EASY", "INTERMEDIATE", "DIFFICULT");
-        playerBox.getItems().addAll("AI", "YOU");
+        playerBox.getItems().addAll("YOU", "AI");
 
         //Set a default value
         AIBox.setValue("EASY");

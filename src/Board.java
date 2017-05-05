@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by BoogieJay
@@ -7,7 +9,9 @@
 public class Board {
 
     private final int SIZE = 4;
+
     private final Cell[][] cells;
+    private final List<int[]> combo;
     private int currentRow;
     private int currentCol;
 
@@ -33,7 +37,9 @@ public class Board {
     }
 
     public Board () {
-        cells = new Cell[SIZE][SIZE];
+        this.cells = new Cell[SIZE][SIZE];
+        this.combo = new ArrayList<>(4);
+
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 cells[i][j] = new Cell();
@@ -54,18 +60,33 @@ public class Board {
 
     public boolean hasWin(Seed seed) {
 
+        combo.clear();
+
+        checkConditionAndReturnCombo(seed);
+
+        return !combo.isEmpty();
+    }
+
+    public List<int[]> checkConditionAndReturnCombo(Seed seed) {
+
         if (cells[currentRow][0].getContent() == seed
                 && cells[currentRow][1].getContent() == seed
                 && cells[currentRow][2].getContent() == seed
                 && cells[currentRow][3].getContent() == seed) {
-            return true;
+            combo.add(new int[]{currentRow, 0});
+            combo.add(new int[]{currentRow, 1});
+            combo.add(new int[]{currentRow, 2});
+            combo.add(new int[]{currentRow, 3});
         }
 
         if (cells[0][currentCol].getContent() == seed
                 && cells[1][currentCol].getContent() == seed
                 && cells[2][currentCol].getContent() == seed
                 && cells[3][currentCol].getContent() == seed) {
-            return true;
+            combo.add(new int[]{0, currentCol});
+            combo.add(new int[]{1, currentCol});
+            combo.add(new int[]{2, currentCol});
+            combo.add(new int[]{3, currentCol});
         }
 
         if (currentCol == currentRow
@@ -73,7 +94,10 @@ public class Board {
                 && cells[1][1].getContent() == seed
                 && cells[2][2].getContent() == seed
                 && cells[3][3].getContent() == seed) {
-            return true;
+            combo.add(new int[]{0, 0});
+            combo.add(new int[]{1, 1});
+            combo.add(new int[]{2, 2});
+            combo.add(new int[]{3, 3});
         }
 
         if (currentCol + currentRow == SIZE - 1
@@ -81,10 +105,13 @@ public class Board {
                 && cells[1][2].getContent() == seed
                 && cells[2][1].getContent() == seed
                 && cells[3][0].getContent() == seed) {
-            return true;
+            combo.add(new int[]{0, 3});
+            combo.add(new int[]{1, 2});
+            combo.add(new int[]{2, 1});
+            combo.add(new int[]{3, 0});
         }
 
-        return false;
+        return combo;
     }
 
     public void paint() {
@@ -127,11 +154,4 @@ public class Board {
         cells[currentRow][currentCol].setContent(seed);
     }
 
-    public void clear() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                cells[i][j].setContent(Seed.EMPTY);
-            }
-        }
-    }
 }
