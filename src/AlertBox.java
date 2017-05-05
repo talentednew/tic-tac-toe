@@ -5,6 +5,8 @@ import javafx.scene.control.*;
 import javafx.geometry.*;
 
 /**
+ * AlertBox class has static method to display the alert information, which implemented with JavaJX
+ *
  * Created by BoogieJay
  * 5/3/17.
  */
@@ -14,7 +16,7 @@ public class AlertBox {
     public static void display(String title, String message) {
         Stage window = new Stage();
 
-        //Block events to other windows
+        // block events to other windows
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle(title);
         window.setMinWidth(250);
@@ -28,7 +30,7 @@ public class AlertBox {
         layout.getChildren().addAll(label, closeButton);
         layout.setAlignment(Pos.CENTER);
 
-        //Display window and wait for it to be closed before returning
+        // display window and wait for it to be closed before returning
         Scene scene = new Scene(layout);
         window.setScene(scene);
         window.showAndWait();
