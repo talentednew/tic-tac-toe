@@ -4,8 +4,6 @@ import java.util.List;
 /**
  * Created by BoogieJay
  * 4/23/17.
- *
- *
  */
 
 public class Board {
