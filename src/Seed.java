@@ -1,4 +1,6 @@
 /**
+ * Seed class represent the three state of cell, which are "X" or "O" or " "
+ *
  * Created by BoogieJay
  * 4/23/17.
  */

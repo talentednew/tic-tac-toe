@@ -1,4 +1,6 @@
 /**
+ * GameState class represent all possible state of the game
+ *
  * Created by BoogieJay
  * 4/23/17.
  */

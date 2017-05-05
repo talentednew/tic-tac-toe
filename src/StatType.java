@@ -1,4 +1,6 @@
 /**
+ * StatType class contains all the statistic information variables asked by the assignment document
+ *
  * Created by BoogieJay
  * 4/30/17.
  */
