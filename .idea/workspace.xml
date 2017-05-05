@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a3a74841-a8a1-4285-90ca-f188dbd7e38e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/AlertBox.java" afterPath="$PROJECT_DIR$/src/AlertBox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/WelcomePage.java" afterPath="$PROJECT_DIR$/src/WelcomePage.java" />
-    </list>
+    <list default="true" id="a3a74841-a8a1-4285-90ca-f188dbd7e38e" name="Default" comment="" />
     <ignored path="TicTacToe.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -109,8 +106,8 @@
       <file leaf-file-name="WelcomePage.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/WelcomePage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-732">
-              <caret line="19" column="53" lean-forward="false" selection-start-line="19" selection-start-column="53" selection-end-line="19" selection-end-column="53" />
+            <state relative-caret-position="288">
+              <caret line="87" column="0" lean-forward="true" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1205,8 +1202,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/WelcomePage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-732">
-          <caret line="19" column="53" lean-forward="false" selection-start-line="19" selection-start-column="53" selection-end-line="19" selection-end-column="53" />
+        <state relative-caret-position="288">
+          <caret line="87" column="0" lean-forward="true" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
