@@ -1,4 +1,12 @@
 /**
+ * EvalType class represent the variables needed for evaluation function.
+ * x3: three X and one Empty cell
+ * x2: two X and two Empty cells
+ * x1: one X and three Empty cells
+ * o3: three O and one Empty cell
+ * o2: two O and two Empty cells
+ * o1: one O and three Empty cells
+ *
  * Created by BoogieJay
  * 4/25/17.
  */
@@ -68,6 +76,10 @@ public class EvalType {
 
     }
 
+    /**
+     * ************ for testing only ***************
+     * print the evalType on the console
+     */
     public void printEvalType() {
         System.out.println("x3 = " + x3);
         System.out.println("x2 = " + x2);
