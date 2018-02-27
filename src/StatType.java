@@ -1,7 +1,7 @@
 /**
  * StatType class contains all the statistic information variables asked by the assignment document
  *
- * Created by BoogieJay
+ * Created by TN
  * 4/30/17.
  */
 public class StatType {

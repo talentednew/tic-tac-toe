@@ -7,7 +7,7 @@ import javafx.geometry.*;
 /**
  * AlertBox class has static method to display the alert information, which implemented with JavaJX
  *
- * Created by BoogieJay
+ * Created by TN
  * 5/3/17.
  */
 

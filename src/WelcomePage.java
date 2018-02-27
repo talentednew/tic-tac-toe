@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 /**
  * WelcomePage class stands for the welcome window for user to choose the AI level and starting person
  *
- * Created by BoogieJay
+ * Created by TN
  * 5/1/17.
  */
 public class WelcomePage {

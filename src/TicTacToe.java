@@ -17,7 +17,7 @@ import java.util.List;
  * It extends javaFX Application
  * It mainly contains two part, one is the UI code for the board, another is hwo the game actually runs by calling other classes
  *
- * Created by BoogieJay
+ * Created by TN
  * 4/23/17.
  */
 public class TicTacToe extends Application{

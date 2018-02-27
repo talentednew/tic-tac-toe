@@ -17,5 +17,3 @@ Just double click the TicTacToe.jar
 ### More info
 
 project requirement:[link](https://drive.google.com/file/d/0B2eD1kXA8I9xdEc1ZENhQ1YzdWM/view?usp=sharing)
-
-project report: [link](https://drive.google.com/file/d/0B2eD1kXA8I9xamUwUmRiQklUQ2c/view?usp=sharing)

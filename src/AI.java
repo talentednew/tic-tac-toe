@@ -2,7 +2,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 /**
- * Created by BoogieJay
+ * Created by TN
  * 4/24/17.
  *
  * the AI class is implemented according to Minimax Algorithm with Alpha-Beta pruning and it also contains

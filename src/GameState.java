@@ -1,7 +1,7 @@
 /**
  * GameState class represent all possible state of the game
  *
- * Created by BoogieJay
+ * Created by TN
  * 4/23/17.
  */
 public enum GameState {

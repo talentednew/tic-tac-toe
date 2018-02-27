@@ -2,7 +2,7 @@
  * Level class represents three AI levels that human could choose to play with.
  * Each level also has a depth value to limit the maximum search depth while searching
  *
- * Created by BoogieJay
+ * Created by TN
  * 4/24/17.
  */
 public enum Level {

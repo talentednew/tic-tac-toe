@@ -5,7 +5,7 @@ import java.util.List;
  * Board class represents the board for human-AI competition
  * It has a inner class "Cell" which stands for every square on the board
  *
- * Created by BoogieJay
+ * Created by TN
  * 4/23/17.
  */
 

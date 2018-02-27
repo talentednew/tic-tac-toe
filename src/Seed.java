@@ -1,7 +1,7 @@
 /**
  * Seed class represent the three state of cell, which are "X" or "O" or " "
  *
- * Created by BoogieJay
+ * Created by TN
  * 4/23/17.
  */
 public enum Seed {

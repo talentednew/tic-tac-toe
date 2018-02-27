@@ -7,7 +7,7 @@
  * o2: two O and two Empty cells
  * o1: one O and three Empty cells
  *
- * Created by BoogieJay
+ * Created by TN
  * 4/25/17.
  */
 public class EvalType {
